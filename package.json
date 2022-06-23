@@ -1,0 +1,12 @@
+{
+  "name": "tallyjs",
+  "version": "0.5.0",
+  "description": "A barebones simple counter",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "microbundle": "^0.15.0",
+    "npm-run-all": "^4.1.5"
+  }
+}
