@@ -3,7 +3,13 @@
   "version": "0.5.0",
   "description": "A barebones simple counter",
   "main": "index.js",
+  "module": "dist/index.js",
   "license": "MIT",
+  "scripts": {
+    "dev:micro":"microbundle watch -i src/index.js -o dist/ --target web -f esm --raw",
+    "dev:serve":"npx serve",
+    "dev":"run-p dev:micro dev:serve"
+  },
   "dependencies": {},
   "devDependencies": {
     "microbundle": "^0.15.0",
