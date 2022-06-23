@@ -6,7 +6,8 @@
   "module": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev:micro":"microbundle watch -i src/index.js -o dist/ --target web -f esm --raw",
+    "bundle":"microbundle build -i src/index.js -o dist/ --target web -f modern --raw",
+    "dev:micro":"microbundle watch -i src/index.js -o dist/ --target web -f modern --raw",
     "dev:serve":"npx serve",
     "dev":"run-p dev:micro dev:serve"
   },

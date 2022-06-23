@@ -12,11 +12,25 @@ const validNum = n => typeof n === 'number' && isNaN(n) === false;
 const countUp = (start, end, prog, dur) => start + (end - start) * (prog / dur);
 const countDown = (start, end, prog, dur) => start - ((start - end) * (prog / dur));
 const generateFormatter = (locale, options, override) => {
-    console.log(locale, options, override);
     if (!override) return { format: (v) => v };
     if (locale === null) return new Intl.NumberFormat();
     return new Intl.NumberFormat(locale, options);
 }
+
+const generateObserver = inst => new IntersectionObserver((entries, observer) => {
+    for (let i = 0;i<entries.length;i++) {
+        if (entries[i].isIntersecting) {
+            inst.count();
+            
+            if (entries[i].target.dataset.scroll === 'once') {
+                observer.disconnect();
+                inst.observer = null;
+            }
+        } else {
+            inst.reset();
+        }
+    }
+});
 class Tally {
 	constructor(el) {
 		this.el = el;
@@ -36,26 +50,14 @@ class Tally {
             el.tagName === 'text' || el.tagName === 'tspan' ?
                 'text' :
                 'element';
+
         /** true == count down, false == count up */
         this.down = this.startVal > this.endVal
 
         this.formatter = generateFormatter(el.dataset.locale || null, JSON.parse(el.dataset.format || '{}'), this.group);
 
 		if ('scroll' in el.dataset) {
-			this.observer = new IntersectionObserver((entries, observer) => {
-				for (let entry of entries) {
-					if (entry.isIntersecting) {
-						this.count();
-						
-						if (el.dataset.scroll === 'once') {
-							observer.disconnect();
-                            this.observer = null;
-						}
-					} else {
-						this.reset();
-					}
-				}
-			});
+			this.observer = generateObserver(this);
 			this.observer.observe(el);
 		}
 	}
@@ -71,24 +73,30 @@ class Tally {
 			this.startTime = ts;
 		}
 		
-		let progress = ts - this.startTime;
-		this.remaining = this.dur - progress;
+        const {
+            startVal,
+            endVal,
+            dur
+        } = this;
 
-		let nextVal = this.dir ? 
-            countUp(this.startVal, this.endVal, progress, this.dur) : 
-            countDown(this.startVal, this.endVal, progress, this.dur);
+		let progress = ts - this.startTime,
+            nextVal = this.dir ? 
+                // Turn this back into plain equations seems to be making
+                // more code than it should be 
+                startVal + (endVal - startVal) * (progress / dur) : 
+                startVal - ((startVal - endVal) * (progress / dur));
 		
-		if (this.down && nextVal < this.endVal) {
-			nextVal = this.endVal;
-		} else if (!this.down && nextVal > this.endVal) {
-            nextVal = this.endVal;
+		if (this.down && nextVal < endVal) {
+			nextVal = endVal;
+		} else if (!this.down && nextVal > endVal) {
+            nextVal = endVal;
         }
 
         nextVal = parseFloat(nextVal.toFixed(this.dec));
         if (this.formatter) nextVal = this.formatter.format(nextVal);
 
 		this.frameVal = nextVal;
-		if (progress < this.dur) {
+		if (progress < dur) {
 			this.rAF = requestAnimationFrame(this.count.bind(this));
 		} else {
 			this.done = true;
@@ -110,12 +118,20 @@ class Tally {
             case 'text':
                 this.el.textContent = v;
             default:
-                this.el.textContent = v;
+                this.__text = v;
         }
 	}
 	
 	get frameVal() {
-		return this.el.textContent
+        switch (this.tagType) {
+            case 'input':
+                return this.el.value;
+            case 'element':
+            case 'text':
+                return this.el.textContent;
+            default:
+                return this.__text;
+        }
 	}
 }
 
