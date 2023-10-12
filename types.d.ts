@@ -29,6 +29,7 @@ export interface TallyOptions {
 export interface TallyAPI {
     count: (ts?:number) => void;
     stop: () => void;
+    use: () => void;
 }
 
 export type Tally = (el:HTMLElement, options: TallyOptions) => TallyAPI

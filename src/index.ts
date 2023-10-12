@@ -103,6 +103,7 @@ const Tally:Tally = (el, options) => {
     return {
         count, //: () => new Promise((res) =>  count(res)),
         stop: () => cancelAnimationFrame(handle),
+        use: noop,
     }
 }
 
