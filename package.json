@@ -1,19 +1,26 @@
 {
   "name": "tallyjs",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A barebones simple counter",
   "main": "index.js",
   "module": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "bundle":"microbundle build -i src/index.js -o dist/ --target web -f modern --raw",
-    "dev:micro":"microbundle watch -i src/index.js -o dist/ --target web -f modern --raw",
-    "dev:serve":"npx serve",
-    "dev":"run-p dev:micro dev:serve"
+    "bundle": "microbundle build -i src/index.js -o dist/ --target web -f modern --raw",
+    "dev:micro": "microbundle watch -i src/index.js -o dist/ --target web -f modern --raw",
+    "dev:serve": "npx serve",
+    "dev": "run-p dev:micro dev:serve",
+    "size":"size-limit"
   },
-  "dependencies": {},
+  "size-limit": [
+    {
+      "path":"dist/tallyjs.modern.mjs"
+    }
+  ],
   "devDependencies": {
+    "@size-limit/preset-small-lib": "^9.0.0",
     "microbundle": "^0.15.0",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "size-limit": "^9.0.0"
   }
 }
