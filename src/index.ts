@@ -2,7 +2,7 @@ import { Tally, TallyOptions } from "../types";
 
 const noop = () => {};
 
-const generateFormatter = (locale:string, options:object) => new Intl.NumberFormat(locale || 'en-US', { ...options });
+const generateFormatter = (locale:string, options:object) => new Intl.NumberFormat(locale, { ...options });
 
 
 
