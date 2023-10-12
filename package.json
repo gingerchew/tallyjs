@@ -4,23 +4,23 @@
   "description": "A barebones simple counter",
   "main": "index.js",
   "module": "dist/index.js",
+  "type": "module",
   "license": "MIT",
   "scripts": {
-    "bundle": "microbundle build -i src/index.js -o dist/ --target web -f modern --raw",
-    "dev:micro": "microbundle watch -i src/index.js -o dist/ --target web -f modern --raw",
-    "dev:serve": "npx serve",
-    "dev": "run-p dev:micro dev:serve",
-    "size":"size-limit"
+    "dev": "node ./build/",
+    "size": "size-limit"
   },
   "size-limit": [
     {
-      "path":"dist/tallyjs.modern.mjs"
+      "path": "dist/index.min.js"
     }
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^9.0.0",
-    "microbundle": "^0.15.0",
+    "esbuild": "^0.19.4",
     "npm-run-all": "^4.1.5",
-    "size-limit": "^9.0.0"
+    "size-limit": "^9.0.0",
+    "vite": "^4.4.11",
+    "vitest": "^0.34.6"
   }
 }
