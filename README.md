@@ -2,6 +2,14 @@
 
 Proper counting in as small a package as possible
 
+## Supported
+- Counts
+- Prefix & Suffix 
+- Decimals
+- Intl.NumberFormatOptions
+  - locale
+  - usGrouping
+
 ## Unsupported
 - formatterOptions.style
     - Hoping to get this one working eventually
@@ -14,3 +22,4 @@ Proper counting in as small a package as possible
 - [ ] duration - How to test??
 - [ ] easing 
 - [ ] signDisplay Intl.NumberFormatOptions
+- [ ] plugins?
