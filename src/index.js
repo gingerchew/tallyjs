@@ -42,6 +42,7 @@ const Tally = (el, options) => {
     el.textContent = start;
 
     let handle = null;
+    
     const count = () => {
         // if at the end, end
         if (num === end) return;
@@ -52,15 +53,13 @@ const Tally = (el, options) => {
         handle = requestAnimationFrame(count);
         
         // if past the end, end
-        if (num >= end) {
-            cancelAnimationFrame(handle);
-        }
+        if (num >= end) cancelAnimationFrame(handle);
     }
 
     // "api"
     return {
         count,
-        stop: () => cancelAnimationFrame(handle)
+        stop: () => cancelAnimationFrame(handle),
     }
 }
 
