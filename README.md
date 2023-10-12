@@ -10,11 +10,6 @@ Proper counting in as small a package as possible
   - locale
   - usGrouping
 
-## Unsupported
-- formatterOptions.style
-    - Hoping to get this one working eventually
-      but for right now it isn't worth the time
-
 ## TODO:
 - [ ] Testing
 - [x] prefix and suffix
@@ -23,3 +18,23 @@ Proper counting in as small a package as possible
 - [ ] easing 
 - [ ] signDisplay Intl.NumberFormatOptions
 - [ ] plugins?
+
+
+## Unsupported
+
+The list is features that are built in, but will cause issues until they are solved. 
+
+E.g. 
+```js
+const counter = Tally(el, {
+  // Intl.NumberFormat sees this as
+  // 1000% and makes calculating the
+  // count *weird*
+  end: 10, 
+  formatterOptions: {
+    style: 'percent'
+  }
+});
+```
+
+- formatterOptions.style
