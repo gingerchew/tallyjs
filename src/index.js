@@ -1,5 +1,17 @@
 const generateFormatter = (locale, options) => new Intl.NumberFormat(locale || 'en-US', { ...options });
 
+/**
+ * 
+ * @param {HTMLElement} el 
+ * @param {object} options 
+ * @prop {number} options.end
+ * @prop {number} options.start
+ * @prop {number} options.decimals
+ * @prop {Intl.ResolvedNumberFormatOptions} formatter
+ * @prop {string} locale
+ * @prop {1|-1} dir
+ * @returns 
+ */
 const Tally = (el, options) => {
     let {
         end,
@@ -7,15 +19,20 @@ const Tally = (el, options) => {
         decimals,
         formatter,
         locale,
+        dir
     } = Object.assign({
         end: el.textContent,
         start: 0,
         decimals: 0,
         formatter: {},
         locale: 'en-US',
+        dir: 1,
     }, options);
 
-    const f = generateFormatter(locale, formatter)
+    const f = generateFormatter(locale, {
+        minimumFractionDigits: decimals,
+        ...formatter
+    })
 
     // parse the nums
     // @TODO: allow for floats
@@ -28,7 +45,7 @@ const Tally = (el, options) => {
     const count = () => {
         // if at the end, end
         if (num === end) return;
-        num += 1 / (10 ** decimals);
+        num += dir / (10 ** decimals);
         el.textContent = f.format(num);
 
         // save animationFrame
