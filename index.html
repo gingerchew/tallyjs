@@ -2,63 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TallyJS</title>
-    <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        body {
-            padding: 2.5vmax 5vmin;
-            margin: 0;
-        }
-        main,
-        section {
-            min-height: 100vh;
-        }
-    </style>
+    <title>Document</title>
 </head>
 <body>
     <main>
-        <section>
-            <h2>Count Up Section</h2>
-            <ul>
-                <li data-count="25" data-decimal="3">0</li>
-                <li data-count="200" data-duration="2.5">0</li>
-                <li data-count="400" data-locale="en-US">8000</li>
-                <li><input type="text" data-count="200" value="0" data-duration="10" data-decimal="1"></li>
-                <li data-count="20000" data-decimal="2" data-locale="ru-RU" data-format='{"style":"currency","currency":"RUB"}'>0</li>
-                <li data-count="4000" data-group="false">80</li>
-            </ul>
-            <button id="tallyCount">Count</button>
-            <button id="tallyReset">Reset</button>
-        </section>
-        <section>
-            <h2>Scroll Section</h2>
-            <ul>
-                <li data-count="25" data-decimal="3" data-scroll>0</li>
-                <li>Once: <span data-count="200" data-duration="2.5" data-scroll="once">0</span></li>
-                <li data-count="400" data-duration="4" data-scroll>800</li>
-                <li><input type="text" data-count="200" value="0" data-duration="10" data-decimal="1" data-scroll></li>
-            </ul>
-            <button id="tallyScrollReset">Reset</button>
-        </section>
+        <div id="main"></div>
+        <button id="$btn">Count</button>
     </main>
-    <script type="module">
-        import { Tally } from './src/index.js';
+    <script>
+        import { Tally } from '../src/index';
 
-        const instances = Array.from(document.querySelectorAll('[data-count]:not([data-scroll])'), el => new Tally(el));
+        Tally(main, {
+            end: 100
+        });
 
-        tallyCount.onclick = () => instances.forEach(inst => inst.count());
-        tallyReset.onclick = () => instances.forEach(inst => inst.reset());
-
-        const scrollInsts = Array.from(document.querySelectorAll('[data-count][data-scroll]'), el => new Tally(el));
-
-        tallyScrollReset.onclick = () => scrollInsts.forEach(inst => inst.reset());
+        $btn.onclick = () => Tally.count();
     </script>
 </body>
 </html>
