@@ -4,7 +4,7 @@ import esbuild from 'esbuild';
 
 /** @type {esbuild.BuildOptions} */
 const config = {
-    entryPoints: ['src/index.js'],
+    entryPoints: ['src/index.ts'],
     outfile: 'dist/index.js',
     sourcemap: false,
     target: ['es2020'],
