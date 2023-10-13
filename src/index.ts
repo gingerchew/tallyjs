@@ -3,9 +3,8 @@ import { Tally, TallyOptions } from "../types";
 const noop = () => {};
 
 const generateFormatter = (locale:string, options:object) => new Intl.NumberFormat(locale, { ...options });
-
-
-
+const caf = cancelAnimationFrame;
+const raf = requestAnimationFrame;
 /**
  * 
  * Plugin system
@@ -60,7 +59,7 @@ const Tally:Tally = (el, options) => {
     el.textContent = ''+start;
 
     let handle:number;
-    const validate = (end:number) => dir === 1 ? frame >= end : frame <= end;
+    const validate = () => dir === 1 ? frame >= end : frame <= end;
 
     const count = (ts:number = 0) => {
         if (!startTime) startTime = ts;
@@ -74,7 +73,7 @@ const Tally:Tally = (el, options) => {
         // based on duration
         frame = start + (end - start) * (progress / duration);
         
-        if (!validate(end)) {
+        if (!validate()) {
             frame = end;
         }
         
@@ -91,18 +90,18 @@ const Tally:Tally = (el, options) => {
          * for a frame it could be 20.01;
          */
         el.textContent = `${prefix}${f.format(frame)}${suffix}`;
-        if (validate(end)) {
-            cancelAnimationFrame(handle);
+        if (validate()) {
+            caf(handle);
             return;
         }
         // save animationFrame
-        handle = requestAnimationFrame(count);
+        handle = raf(count);
     }
 
     // "api"
     return {
         count, //: () => new Promise((res) =>  count(res)),
-        stop: () => cancelAnimationFrame(handle),
+        stop: () => caf(handle),
         use: noop,
     }
 }
