@@ -2,9 +2,9 @@ import { Tally, TallyOptions } from "../types";
 
 const noop = () => {};
 
-const generateFormatter = (locale:string, options:object) => new Intl.NumberFormat(locale, { ...options });
+const generateFormatter = (locale:string, options:object) => new Intl.NumberFormat(locale, options);
 const caf = cancelAnimationFrame;
-const raf = requestAnimationFrame;
+
 /**
  * 
  * Plugin system
@@ -95,7 +95,7 @@ const Tally:Tally = (el, options) => {
             return;
         }
         // save animationFrame
-        handle = raf(count);
+        handle = requestAnimationFrame(count);
     }
 
     // "api"
